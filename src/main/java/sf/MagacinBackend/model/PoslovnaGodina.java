@@ -30,7 +30,7 @@ public class PoslovnaGodina implements Serializable {
             columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
     private Timestamp godina;
 
-    @Column
+    @Column(columnDefinition = "boolean default true")
     protected boolean aktivna;
 
     @JsonIgnore

@@ -27,7 +27,7 @@ public class PrometniDokument implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private int redniBroj;
+    private String redniBroj;
 
     @Column(name = "datum_formiranja",
             columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")

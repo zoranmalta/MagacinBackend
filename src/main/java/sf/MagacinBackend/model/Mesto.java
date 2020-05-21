@@ -25,7 +25,7 @@ public class Mesto implements Serializable {
     private Long id;
 
     @NotBlank(message = "Morate navesti naziv mesta")
-    private String nazivMesta;
+    private String naziv;
 
     @NotBlank(message = "morate navesti ptt broj")
     private int ptt;

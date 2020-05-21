@@ -21,7 +21,7 @@ public class JedinicaMere implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer idJedMere;
+    private Long id;
 
     @NotBlank(message = "Morate navesti naziv jedinice mere")
     private String naziv;

@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.12.2.final using JasperReports Library version 6.12.2-75c5e90a222ab406e416cbf590a5397028a52de3  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Artikli" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="1abe9eb3-8913-4a0f-99e8-ac6dbe5555bf">
+	<property name="com.jaspersoft.studio.data.sql.tables">
+		<![CDATA[bWFnYWNpbi5ncnVwYV9yb2JhICwxODgsMTMxLDgyY2IwZjQwLWRmYzUtNDc5NS1hNjJjLWM5NTA0
+MjNhMThiOTttYWdhY2luLnByZWR1emVjZSAsMzQyLDEwNSw5Njc3NjczMS05ODVjLTQ3YWUtYWFm
+YS1jNzM4YzM1ZTE0ZTg7bWFnYWNpbi5qZWRpbmljYV9tZXJlICwxODgsMTUsMjVjYjdhNDAtMDVj
+MS00MmJjLThmYzUtYzQ1YWU4YjZiNzMzO21hZ2FjaW4ucm9iYSAsMTUsMjYsNmFhNjU3NGYtMzRm
+YS00NWRhLTk0NWItNjI4NWRjYjZlZGY5Ow==]]>
+	</property>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="289"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="700"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="New Data Adapter "/>
+	<queryString language="SQL">
+		<![CDATA[SELECT magacin.grupa_roba.naziv,
+	magacin.roba.sifra,
+	magacin.roba.pakovanje,
+	magacin.jedinica_mere.naziv,
+	magacin.roba.naziv,
+	magacin.preduzece.naziv,
+	magacin.preduzece.pib
+FROM magacin.roba
+	INNER JOIN magacin.jedinica_mere ON 
+	 magacin.roba.jedinica_mere_id = magacin.jedinica_mere.id 
+	INNER JOIN magacin.grupa_roba ON 
+	 magacin.roba.grupa_roba_id = magacin.grupa_roba.id 
+	INNER JOIN magacin.preduzece ON 
+	 magacin.grupa_roba.preduzece_id = magacin.preduzece.id]]>
+	</queryString>
+	<field name="naziv" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="naziv"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="grupa_roba"/>
+		<fieldDescription><![CDATA[nazivGrupaRoba]]></fieldDescription>
+	</field>
+	<field name="sifra" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="sifra"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="roba"/>
+	</field>
+	<field name="pakovanje" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.label" value="pakovanje"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="roba"/>
+	</field>
+	<field name="COLUMN_4" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="naziv"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="jedinica_mere"/>
+		<fieldDescription><![CDATA[nazivJedinicaMere]]></fieldDescription>
+	</field>
+	<field name="COLUMN_5" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="naziv"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="roba"/>
+		<fieldDescription><![CDATA[nazivRoba]]></fieldDescription>
+	</field>
+	<field name="COLUMN_6" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="naziv"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="preduzece"/>
+		<fieldDescription><![CDATA[nazivPreduzeca]]></fieldDescription>
+	</field>
+	<field name="pib" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="pib"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="preduzece"/>
+	</field>
+	<group name="Group1">
+		<groupHeader>
+			<band height="56">
+				<textField>
+					<reportElement x="90" y="10" width="430" height="20" uuid="b7f80cf8-f81a-46bf-8293-d9ca6de796ee"/>
+					<textElement>
+						<font size="14"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{naziv}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="9" y="10" width="70" height="20" uuid="130284e7-74ae-4251-a4fb-73de8f4a7a9a"/>
+					<textElement>
+						<font size="14"/>
+					</textElement>
+					<text><![CDATA[Grupa roba:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="9" y="35" width="42" height="20" uuid="a4aaecdc-7c83-46ad-a7fc-222cb2eca41f"/>
+					<textElement>
+						<font size="14"/>
+					</textElement>
+					<text><![CDATA[Sifra]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="80" y="35" width="46" height="18" uuid="7126518c-63e4-4de7-b4ba-652fb987e662"/>
+					<textElement>
+						<font size="14"/>
+					</textElement>
+					<text><![CDATA[Pak.]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="130" y="36" width="80" height="18" uuid="506e7c45-672e-459f-be9e-a9b21123a7c4"/>
+					<textElement>
+						<font size="14"/>
+					</textElement>
+					<text><![CDATA[Jed. mere]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="230" y="35" width="134" height="18" uuid="731fdea8-7832-4812-a1e2-1efacff50143"/>
+					<textElement>
+						<font size="14"/>
+					</textElement>
+					<text><![CDATA[Naziv  Artikla]]></text>
+				</staticText>
+				<line>
+					<reportElement x="-20" y="55" width="595" height="1" uuid="e9cffbaa-2aba-4278-812d-d84e75e0d7f3"/>
+				</line>
+			</band>
+		</groupHeader>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="44" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="9" width="160" height="20" uuid="6b995d85-2f8b-43d3-a39d-36ae6cbcbe7f"/>
+				<textElement>
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{COLUMN_6}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="425" y="9" width="34" height="18" uuid="6cd3a77b-697f-4bb4-b6b2-d163dc077e41"/>
+				<textElement>
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[Pib:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="459" y="9" width="110" height="18" uuid="1ffc546b-6a2e-48b6-80ea-466802f2e4b0"/>
+				<textElement>
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pib}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="210" y="8" width="150" height="30" uuid="63aff3a7-7b18-43fb-b11a-c172f35acf4d"/>
+				<textElement>
+					<font size="22"/>
+				</textElement>
+				<text><![CDATA[Lista Artikala]]></text>
+			</staticText>
+			<line>
+				<reportElement x="-20" y="40" width="595" height="1" uuid="163a4a37-55f2-42c5-885c-619a884f5a0b"/>
+			</line>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="38" splitType="Stretch">
+			<textField>
+				<reportElement x="8" y="10" width="42" height="20" uuid="64649186-0e1d-4b26-8ef7-0a370d040b7d"/>
+				<textElement>
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{sifra}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="80" y="10" width="46" height="20" uuid="a6dfab69-dc9e-4e4d-8ea0-2f5a7774d7a6"/>
+				<textElement>
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pakovanje}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="230" y="10" width="314" height="20" uuid="f2fe7327-9728-4bb5-bc9f-db4069919d87"/>
+				<textElement>
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{COLUMN_5}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="130" y="10" width="80" height="20" uuid="b94c6f81-bb5b-42b0-8bcd-cb8e2e7b84fb"/>
+				<textElement>
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{COLUMN_4}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+</jasperReport>

@@ -37,15 +37,15 @@ public class Preduzece {
     private String adresa;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "preduzece")
+    @OneToMany(targetEntity = Radnik.class, mappedBy = "preduzece")
     private List<Radnik> radnici=new ArrayList<>();
 
     @JsonIgnore
-    @OneToMany(mappedBy = "preduzece")
+    @OneToMany(targetEntity = GrupaRoba.class, mappedBy = "preduzece")
     private List<GrupaRoba> grupaRoba=new ArrayList<>();
 
     @JsonIgnore
-    @OneToMany(mappedBy = "preduzece")
+    @OneToMany(targetEntity = Magacin.class, mappedBy = "preduzece")
     private List<Magacin> magacini=new ArrayList<>();
 
     @JsonIgnore
