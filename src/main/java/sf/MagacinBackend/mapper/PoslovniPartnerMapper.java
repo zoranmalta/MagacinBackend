@@ -1,12 +1,14 @@
 package sf.MagacinBackend.mapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import sf.MagacinBackend.model.PoslovniPartner;
 import sf.MagacinBackend.modelDTO.PoslovniPartnerDTO;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Component
 public class PoslovniPartnerMapper {
     @Autowired
     private MestoMapper mestoMapper;

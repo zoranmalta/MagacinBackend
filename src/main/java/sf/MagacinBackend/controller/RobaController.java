@@ -13,9 +13,12 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sf.MagacinBackend.mapper.RobaMapper;
+import sf.MagacinBackend.model.Magacin;
 import sf.MagacinBackend.model.Roba;
 import sf.MagacinBackend.modelDTO.RobaDTO;
+import sf.MagacinBackend.service.MagacinService;
 import sf.MagacinBackend.service.RobaService;
+import sf.MagacinBackend.service.serviceImpl.RobnaKarticaServiceImpl;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -31,6 +34,10 @@ import java.util.List;
 public class RobaController {
     @Autowired
     private RobaService robaService;
+    @Autowired
+    private MagacinService magacinService;
+    @Autowired
+    private RobnaKarticaServiceImpl robnaKarticaService;
     @Autowired
     private RobaMapper robaMapper;
 
@@ -49,7 +56,10 @@ public class RobaController {
         System.out.println("pristiglo sa servera "+robaDTO.toString());
         try {
             Roba roba=robaMapper.toRoba(robaDTO);
-            roba=robaService.insertRoba(roba);
+            List<Magacin> magacinList=magacinService.getAll();
+
+            robaService.insertRobaAndRobnaKartica(roba,magacinList);
+
             return new ResponseEntity<>(robaMapper.roRobaDTO(roba),HttpStatus.OK);
         }catch (Exception e){
             e.printStackTrace();

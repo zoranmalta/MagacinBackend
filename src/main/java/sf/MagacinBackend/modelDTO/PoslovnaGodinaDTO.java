@@ -16,9 +16,9 @@ public class PoslovnaGodinaDTO {
 
     private boolean zakljucena;
 
+    private Timestamp godinaStart;
 
-    private Timestamp godina;
-
+    private Timestamp godinaEnd;
 
     protected boolean aktivna;
 }

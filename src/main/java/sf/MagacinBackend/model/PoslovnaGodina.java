@@ -26,9 +26,13 @@ public class PoslovnaGodina implements Serializable {
     @Column(columnDefinition = "boolean default false")
     private boolean zakljucena;
 
-    @Column(name = "godina",
+    @Column(name = "godina_start",
             columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
-    private Timestamp godina;
+    private Timestamp godinaStart;
+
+    @Column(name = "godina_end",
+            columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
+    private Timestamp godinaEnd;
 
     @Column(columnDefinition = "boolean default true")
     protected boolean aktivna;

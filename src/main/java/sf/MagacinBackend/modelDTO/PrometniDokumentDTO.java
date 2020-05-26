@@ -8,6 +8,8 @@ import sf.MagacinBackend.model.StatusDokumenta;
 import sf.MagacinBackend.model.TipPrometnogDokumenta;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -24,4 +26,5 @@ public class PrometniDokumentDTO {
     private MagacinDTO magacin2;
     private PoslovniPartnerDTO poslovniPartner;
     private PoslovnaGodinaDTO poslovnaGodina;
+    private List<StavkaPrometnogDokumentaDTO> stavke=new ArrayList<>();
 }
