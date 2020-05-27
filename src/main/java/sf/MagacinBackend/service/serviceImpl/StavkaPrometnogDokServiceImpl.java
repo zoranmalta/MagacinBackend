@@ -2,6 +2,7 @@ package sf.MagacinBackend.service.serviceImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import sf.MagacinBackend.model.PrometniDokument;
 import sf.MagacinBackend.model.StavkaPrometnogDokumenta;
 import sf.MagacinBackend.repository.StavkaPrometnogDokRepository;
 import sf.MagacinBackend.service.StavkaPrometnogDokService;
@@ -13,7 +14,6 @@ public class StavkaPrometnogDokServiceImpl implements StavkaPrometnogDokService 
     @Autowired
     private StavkaPrometnogDokRepository repository;
 
-
     @Override
     public List<StavkaPrometnogDokumenta> insertAll(List<StavkaPrometnogDokumenta> stavke) {
         return repository.saveAll(stavke);
@@ -22,5 +22,10 @@ public class StavkaPrometnogDokServiceImpl implements StavkaPrometnogDokService 
     @Override
     public void deleteAll(List<StavkaPrometnogDokumenta> stavke) {
         repository.deleteAll(stavke);
+    }
+
+    @Override
+    public List<StavkaPrometnogDokumenta> getAllByPrometniDokument(PrometniDokument prometniDokument) {
+        return repository.findAllByPrometniDokument(prometniDokument);
     }
 }

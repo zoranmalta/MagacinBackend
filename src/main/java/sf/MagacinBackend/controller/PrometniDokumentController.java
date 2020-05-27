@@ -12,13 +12,10 @@ import sf.MagacinBackend.model.*;
 import sf.MagacinBackend.modelDTO.PrometniDokumentDTO;
 import sf.MagacinBackend.modelDTO.StavkaPrometnogDokumentaDTO;
 import sf.MagacinBackend.service.PoslovnaGodinaService;
+import sf.MagacinBackend.service.PrometniDokumentService;
 import sf.MagacinBackend.service.RobnaKarticaService;
 import sf.MagacinBackend.service.StavkaPrometnogDokService;
-import sf.MagacinBackend.service.serviceImpl.PrometniDokumentServiceImpl;
 
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,7 +24,7 @@ import java.util.stream.Collectors;
 @RequestMapping( value = "/prometnidokument", produces = MediaType.APPLICATION_JSON_VALUE )
 public class PrometniDokumentController {
     @Autowired
-    private PrometniDokumentServiceImpl prometniDokumentService;
+    private PrometniDokumentService prometniDokumentService;
     @Autowired
     private StavkaPrometnogDokService stavkaPrometnogDokService;
     @Autowired
@@ -40,6 +37,31 @@ public class PrometniDokumentController {
     private PoslovnaGodinaMapper poslovnaGodinaMapper;
     @Autowired
     StavkaPrometnogDokMapper stavkaPrometnogDokMapper;
+
+    @RequestMapping(value="/all",method = RequestMethod.GET)
+    public ResponseEntity<List<PrometniDokumentDTO>> getAll(){
+        try {
+            List<PrometniDokument> listEntity=prometniDokumentService.getAll();
+
+            for (PrometniDokument prometniDokument:listEntity) {
+                List<StavkaPrometnogDokumenta> stavke= stavkaPrometnogDokService
+                        .getAllByPrometniDokument(prometniDokument);
+                prometniDokument.setListaStavki(stavke);
+            }
+            List<PrometniDokumentDTO> list=listEntity.stream().map(prometniDokument -> {
+                List<StavkaPrometnogDokumentaDTO> dtos=stavkaPrometnogDokMapper
+                        .toListStavkaDTO(prometniDokument.getListaStavki());
+                PrometniDokumentDTO p=prometniDokumentMapper.toPrometniDokumentDTO(prometniDokument);
+                p.setStavke(dtos);
+                return p;
+            }).collect(Collectors.toList());
+
+            return new ResponseEntity<>(list,HttpStatus.OK);
+        }catch (Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
 
     @RequestMapping(value = "/insertprijemnica",method = RequestMethod.POST)
     public ResponseEntity<PrometniDokumentDTO> insert(@RequestBody PrometniDokumentDTO prometniDokumentDTO){

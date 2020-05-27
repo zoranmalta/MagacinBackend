@@ -17,6 +17,8 @@ public class PrometniDokumentMapper {
     private PoslovniPartnerMapper poslovniPartnerMapper;
     @Autowired
     private PoslovnaGodinaMapper poslovnaGodinaMapper;
+    @Autowired
+    private StavkaPrometnogDokMapper stavkaPrometnogDokMapper;
 
     public PrometniDokument toPrometniDokument(PrometniDokumentDTO prometniDokumentDTO){
         PrometniDokument p=new PrometniDokument();

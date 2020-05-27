@@ -28,6 +28,7 @@ public class PrometniDokumentServiceImpl implements PrometniDokumentService {
         return repository.findAll();
     }
 
+    @Override
     @Transactional
     public void prometniDokumentStavkeTransaction(PrometniDokument p
             , List<StavkaPrometnogDokumenta> list){
