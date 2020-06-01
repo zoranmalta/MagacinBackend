@@ -3,6 +3,7 @@ package sf.MagacinBackend.service.serviceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sf.MagacinBackend.model.Magacin;
+import sf.MagacinBackend.model.PoslovnaGodina;
 import sf.MagacinBackend.model.Roba;
 import sf.MagacinBackend.model.RobnaKartica;
 import sf.MagacinBackend.repository.RobnaKarticaRepository;
@@ -14,7 +15,6 @@ import java.util.List;
 public class RobnaKarticaServiceImpl implements RobnaKarticaService {
     @Autowired
     private RobnaKarticaRepository robnaKarticaRepository;
-
 
     @Override
     public void insert(RobnaKartica robnaKartica) {
@@ -31,12 +31,12 @@ public class RobnaKarticaServiceImpl implements RobnaKarticaService {
         return robnaKarticaRepository.findAllByMagacin(magacin);
     }
     @Override
-    public void insertAll(Roba roba,List<Magacin> magacinList){
-        for (Magacin m :
-                magacinList) {
+    public void insertAll(Magacin magacin,List<Roba> robaList,PoslovnaGodina poslovnaGodina){
+        for (Roba r : robaList) {
             RobnaKartica rk = new RobnaKartica();
-            rk.setRoba(roba);
-            rk.setMagacin(m);
+            rk.setRoba(r);
+            rk.setMagacin(magacin);
+            rk.setPoslovnaGodina(poslovnaGodina);
             rk.setCena(0.00);
             rk.setVrednostUlaza(0.00);
             rk.setVrednostPocetnogStanja(0.00);
@@ -48,5 +48,10 @@ public class RobnaKarticaServiceImpl implements RobnaKarticaService {
             rk.setKolicinaIzlaza(0.00);
             insert(rk);
         }
+    }
+
+    @Override
+    public RobnaKartica getOneByRobaAndMagacinAndPoslovnaGodina(Roba roba, Magacin magacin, PoslovnaGodina poslovnaGodina) {
+        return robnaKarticaRepository.findOneByRobaAndMagacinAndPoslovnaGodina(roba,magacin,poslovnaGodina);
     }
 }

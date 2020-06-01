@@ -30,12 +30,6 @@ public class RobaServiceImpl implements RobaService {
         return robaRepository.save(roba);
     }
 
-    @Override
-    @Transactional
-    public void insertRobaAndRobnaKartica(Roba roba, List<Magacin> magacinList) {
-        roba=insertRoba(roba);
-        robnaKarticaService.insertAll(roba,magacinList);
-    }
 
 
 }

@@ -2,6 +2,7 @@ package sf.MagacinBackend.mapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RequestMapping;
 import sf.MagacinBackend.model.RobnaKartica;
 import sf.MagacinBackend.modelDTO.RobnaKarticaDTO;
 
@@ -17,7 +18,8 @@ public class RobnaKarticaMapper {
     @Autowired
     private PoslovnaGodinaMapper poslovnaGodinaMapper;
 
-    RobnaKartica toRobnaKartica(RobnaKarticaDTO robnaKarticaDTO){
+
+    public RobnaKartica toRobnaKartica(RobnaKarticaDTO robnaKarticaDTO){
         RobnaKartica r=new RobnaKartica();
         r.setId(robnaKarticaDTO.getId());
         r.setCena(robnaKarticaDTO.getCena());
@@ -39,7 +41,7 @@ public class RobnaKarticaMapper {
         return r;
     }
 
-    RobnaKarticaDTO toRobnaKarticaDTO(RobnaKartica robnaKartica){
+    public RobnaKarticaDTO toRobnaKarticaDTO(RobnaKartica robnaKartica){
         RobnaKarticaDTO r=new RobnaKarticaDTO();
         r.setId(robnaKartica.getId());
         r.setCena(robnaKartica.getCena());
@@ -61,7 +63,7 @@ public class RobnaKarticaMapper {
         return r;
     }
 
-    List<RobnaKarticaDTO> toListRobnaKarticaDTO(List<RobnaKartica> list){
+    public List<RobnaKarticaDTO> toListRobnaKarticaDTO(List<RobnaKartica> list){
         return list.stream().map(robnaKartica -> toRobnaKarticaDTO(robnaKartica))
                 .collect(Collectors.toList());
     }

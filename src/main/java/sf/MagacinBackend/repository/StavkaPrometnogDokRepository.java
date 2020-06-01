@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface StavkaPrometnogDokRepository extends JpaRepository<StavkaPrometnogDokumenta,Long> {
     List<StavkaPrometnogDokumenta> findAllByPrometniDokument(PrometniDokument prometniDokument);
+
 }

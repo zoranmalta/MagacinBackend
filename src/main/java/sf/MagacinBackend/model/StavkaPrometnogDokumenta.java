@@ -1,5 +1,6 @@
 package sf.MagacinBackend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -7,6 +8,8 @@ import lombok.ToString;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -32,6 +35,8 @@ public class StavkaPrometnogDokumenta implements Serializable {
     @ManyToOne
     private PrometniDokument prometniDokument;
 
-    //mozda treba jos lista analiticke kartice ???
+    @JsonIgnore
+    @OneToMany(mappedBy = "stavkaDokumenta")
+    private List<AnalitikaMagacinskeKartice> listaAnalitika=new ArrayList<>();
 
 }

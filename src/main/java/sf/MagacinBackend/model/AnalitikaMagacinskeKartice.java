@@ -15,7 +15,7 @@ import java.sql.Timestamp;
 @Setter
 @NoArgsConstructor
 @ToString
-public class AnalitikaMagacinskeKartice implements Serializable {
+public class AnalitikaMagacinskeKartice implements Serializable ,Comparable<AnalitikaMagacinskeKartice>{
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -39,9 +39,12 @@ public class AnalitikaMagacinskeKartice implements Serializable {
     private Timestamp datumFormiranja;
 
     @ManyToOne
-    protected RobnaKartica robnaKartica;
+    private RobnaKartica robnaKartica;
+    @ManyToOne
+    private StavkaPrometnogDokumenta stavkaDokumenta;
 
-//    @ManyToOne
-//    protected StavkaPrometnogDokumenta stavkaDokumenta;
-
+    @Override
+    public int compareTo(AnalitikaMagacinskeKartice o) {
+        return this.getDatumFormiranja().getNanos()-o.getDatumFormiranja().getNanos();
+    }
 }

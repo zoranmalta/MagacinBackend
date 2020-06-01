@@ -8,5 +8,4 @@ import java.util.List;
 public interface RobaService {
     List<Roba> getAll();
     Roba insertRoba(Roba roba);
-    void insertRobaAndRobnaKartica(Roba roba, List<Magacin> magacinList);
 }

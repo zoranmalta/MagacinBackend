@@ -1,6 +1,7 @@
 package sf.MagacinBackend.service;
 
 import sf.MagacinBackend.model.Magacin;
+import sf.MagacinBackend.model.PoslovnaGodina;
 import sf.MagacinBackend.model.Roba;
 import sf.MagacinBackend.model.RobnaKartica;
 
@@ -10,5 +11,6 @@ public interface RobnaKarticaService  {
     void insert(RobnaKartica robnaKartica);
     RobnaKartica getOneByRoba(Roba roba);
     List<RobnaKartica> getAllByMagacin(Magacin magacin);
-    void insertAll(Roba roba,List<Magacin> magacinList);
+    void insertAll(Magacin magacin,List<Roba> robaList,PoslovnaGodina poslovnaGodina);
+    RobnaKartica getOneByRobaAndMagacinAndPoslovnaGodina(Roba roba, Magacin magacin, PoslovnaGodina poslovnaGodina);
 }

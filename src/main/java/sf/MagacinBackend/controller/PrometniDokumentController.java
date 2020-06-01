@@ -16,6 +16,8 @@ import sf.MagacinBackend.service.PrometniDokumentService;
 import sf.MagacinBackend.service.RobnaKarticaService;
 import sf.MagacinBackend.service.StavkaPrometnogDokService;
 
+import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -62,9 +64,36 @@ public class PrometniDokumentController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
+    @RequestMapping(value = "/proknjizi",method=RequestMethod.POST)
+    public ResponseEntity<PrometniDokumentDTO> proknjiziPrijemnicu
+            (@RequestBody PrometniDokumentDTO prometniDokumentDTO){
+        try {
+            PrometniDokument p = prometniDokumentMapper.toPrometniDokument(prometniDokumentDTO);
+            p.setStatusDokumenta(StatusDokumenta.Proknjizen);
+            List<StavkaPrometnogDokumenta> stavke = stavkaPrometnogDokService
+                    .getAllByPrometniDokument(p);
+            p.setListaStavki(stavke);
+            p.setDatumKnjizenja(new Timestamp(System.currentTimeMillis()));
+            if(p.getTipPrometnogDokumenta()==TipPrometnogDokumenta.PRIJEMNICA){
+                prometniDokumentService.knjizenjePrijemnice(p);
+            }
+            if(p.getTipPrometnogDokumenta()==TipPrometnogDokumenta.OTPREMNICA){
+                prometniDokumentService.knjizenjeOtpremnice(p);
+            }
+            if(p.getTipPrometnogDokumenta()==TipPrometnogDokumenta.MM){
+                prometniDokumentService.knjizenjeOtpremnice(p);
+            }
+            PrometniDokumentDTO pDto=prometniDokumentMapper.toPrometniDokumentDTO(p);
+            pDto.setStavke(stavkaPrometnogDokMapper.toListStavkaDTO(stavke));
+            return new ResponseEntity<>(pDto, HttpStatus.OK);
+        }catch (Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
 
-    @RequestMapping(value = "/insertprijemnica",method = RequestMethod.POST)
-    public ResponseEntity<PrometniDokumentDTO> insert(@RequestBody PrometniDokumentDTO prometniDokumentDTO){
+    @RequestMapping(value = "insertmm",method = RequestMethod.POST)
+    public ResponseEntity<PrometniDokumentDTO> insertMM(@RequestBody PrometniDokumentDTO prometniDokumentDTO){
         System.out.println("Stiglo sa klijenta : "+prometniDokumentDTO.toString());
         try {
             PoslovnaGodina godina=poslovnaGodinaService.findOneByDate(prometniDokumentDTO.getDatumFormiranja());
@@ -73,8 +102,12 @@ public class PrometniDokumentController {
             List<StavkaPrometnogDokumenta> list=prometniDokumentDTO.getStavke().stream().map(
                     stavkaPrometnogDokumentaDTO -> stavkaPrometnogDokMapper.toStavkaPrometnogDokumenta
                             (stavkaPrometnogDokumentaDTO)).collect(Collectors.toList());
-
-            prometniDokumentService.prometniDokumentStavkeTransaction(p,list);
+            //provera dovoljnih kolicina stavki i da li uopste postoje
+            boolean check= prometniDokumentService.proveriRobneKarticeIKolicinuSvake(p,list);
+            if(!check){
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
+            prometniDokumentService.insertMMTransaction(p,list);
             PrometniDokumentDTO prometniDokumentDTO1=new PrometniDokumentDTO();
             prometniDokumentDTO1=prometniDokumentMapper.toPrometniDokumentDTO(p);
             List<StavkaPrometnogDokumentaDTO> dtos=stavkaPrometnogDokMapper.toListStavkaDTO(list);
@@ -84,5 +117,64 @@ public class PrometniDokumentController {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @RequestMapping(value = "/insertotpremnica", method = RequestMethod.POST)
+    public ResponseEntity<PrometniDokumentDTO> insertOtpremnica(@RequestBody PrometniDokumentDTO prometniDokumentDTO){
+        System.out.println("Stiglo sa klijenta : "+prometniDokumentDTO.toString());
+        try {
+            //setujem poslovnu godinu,mapiram p i list
+            PoslovnaGodina godina=poslovnaGodinaService.findOneByDate(prometniDokumentDTO.getDatumFormiranja());
+            prometniDokumentDTO.setPoslovnaGodina(poslovnaGodinaMapper.toPoslovnaGodinaDTO(godina));
+            PrometniDokument p= prometniDokumentMapper.toPrometniDokument(prometniDokumentDTO);
+            List<StavkaPrometnogDokumenta> list=prometniDokumentDTO.getStavke().stream().map(
+                    stavkaPrometnogDokumentaDTO -> stavkaPrometnogDokMapper.toStavkaPrometnogDokumenta
+                            (stavkaPrometnogDokumentaDTO)).collect(Collectors.toList());
+            //provera dovoljnih kolicina stavki i da li uopste postoje
+            boolean check= prometniDokumentService.proveriRobneKarticeIKolicinuSvake(p,list);
+            if(!check){
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
+            prometniDokumentService.insertOtpremnicaTransaction(p,list);
+            PrometniDokumentDTO prometniDokumentDTO1=new PrometniDokumentDTO();
+            prometniDokumentDTO1=prometniDokumentMapper.toPrometniDokumentDTO(p);
+            List<StavkaPrometnogDokumentaDTO> dtos=stavkaPrometnogDokMapper.toListStavkaDTO(list);
+            prometniDokumentDTO1.setStavke(dtos);
+            return new ResponseEntity<>(prometniDokumentDTO1, HttpStatus.OK);
+        }catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @RequestMapping(value = "/insertprijemnica",method = RequestMethod.POST)
+    public ResponseEntity<PrometniDokumentDTO> insertPrijemnica(@RequestBody PrometniDokumentDTO prometniDokumentDTO){
+        System.out.println("Stiglo sa klijenta : "+prometniDokumentDTO.toString());
+        try {
+            PoslovnaGodina godina=poslovnaGodinaService.findOneByDate(prometniDokumentDTO.getDatumFormiranja());
+            prometniDokumentDTO.setPoslovnaGodina(poslovnaGodinaMapper.toPoslovnaGodinaDTO(godina));
+            PrometniDokument p= prometniDokumentMapper.toPrometniDokument(prometniDokumentDTO);
+            List<StavkaPrometnogDokumenta> list=prometniDokumentDTO.getStavke().stream().map(
+                    stavkaPrometnogDokumentaDTO -> stavkaPrometnogDokMapper.toStavkaPrometnogDokumenta
+                            (stavkaPrometnogDokumentaDTO)).collect(Collectors.toList());
+
+            prometniDokumentService.insertPrijemnicaTransaction(p,list);
+            PrometniDokumentDTO prometniDokumentDTO1=new PrometniDokumentDTO();
+            prometniDokumentDTO1=prometniDokumentMapper.toPrometniDokumentDTO(p);
+            List<StavkaPrometnogDokumentaDTO> dtos=stavkaPrometnogDokMapper.toListStavkaDTO(list);
+            prometniDokumentDTO1.setStavke(dtos);
+            return new ResponseEntity<>(prometniDokumentDTO1, HttpStatus.OK);
+        }catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+    @RequestMapping(value = "/stornoprijemnica",method = RequestMethod.POST)
+    public ResponseEntity<PrometniDokumentDTO> stornoPrijemnica(@RequestBody PrometniDokumentDTO prometniDokumentDTO) {
+        System.out.println("Stiglo sa klijenta : " + prometniDokumentDTO.toString());
+
+
+
+        return null;
     }
 }

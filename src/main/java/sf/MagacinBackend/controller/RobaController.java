@@ -56,9 +56,8 @@ public class RobaController {
         System.out.println("pristiglo sa servera "+robaDTO.toString());
         try {
             Roba roba=robaMapper.toRoba(robaDTO);
-            List<Magacin> magacinList=magacinService.getAll();
 
-            robaService.insertRobaAndRobnaKartica(roba,magacinList);
+            robaService.insertRoba(roba);
 
             return new ResponseEntity<>(robaMapper.roRobaDTO(roba),HttpStatus.OK);
         }catch (Exception e){
