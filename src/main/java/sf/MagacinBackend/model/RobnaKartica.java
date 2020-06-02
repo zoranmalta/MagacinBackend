@@ -72,12 +72,13 @@ public class RobnaKartica implements Serializable  {
         this.setVrednostIzlaza(0.00);
 
         List<AnalitikaMagacinskeKartice> list=new ArrayList<>(this.getAnalitike());
-//        Collections.sort(list, (d2,d1) -> {
-//            return  d1.getDatumFormiranja().getNanos()-d2.getDatumFormiranja().getNanos();
-//        });
         list.sort((o1, o2) -> o1.getDatumFormiranja().compareTo(o2.getDatumFormiranja()));
         for(AnalitikaMagacinskeKartice a:list){
-            System.out.println("sortirana lista ? : "+a.getDatumFormiranja());
+            //stavka ciji je dokument storniran ne ulazi u obracun
+            if(a.getStavkaDokumenta().getPrometniDokument().getStatusDokumenta()==StatusDokumenta.Storniran){
+                continue;
+            }
+            System.out.println("sortirana lista  : "+a.getDatumFormiranja());
             if(a.getStavkaDokumenta().getPrometniDokument()
                     .getTipPrometnogDokumenta() == TipPrometnogDokumenta.PRIJEMNICA){
                 this.setKolicinaUlaza(this.getKolicinaUlaza() + a.getKolicina());

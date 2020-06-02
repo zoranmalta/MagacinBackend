@@ -165,30 +165,81 @@ public class PrometniDokumentServiceImpl implements PrometniDokumentService {
 
     @Override
     @Transactional
-    public void knjizenjePrijemnice(PrometniDokument prometniDokument) {
+    public void knjizenjeIliStorno(PrometniDokument prometniDokument) {
         //update prometnogDokumneta
         prometniDokument=insert(prometniDokument);
     }
 
+    //provera kartice za sve slucajeve inserta (Otpremnice i MM)!!!
     @Override
-    @Transactional
-    public void knjizenjeOtpremnice(PrometniDokument prometniDokument) {
-        //update prometnogDokumneta
-        prometniDokument=insert(prometniDokument);
-    }
-
-    @Override
-    public boolean proveriRobneKarticeIKolicinuSvake(PrometniDokument p, List<StavkaPrometnogDokumenta> list) {
+    public boolean proveriRobneKarticeZaInsert(PrometniDokument p, List<StavkaPrometnogDokumenta> list) {
         boolean check=false;
         for (StavkaPrometnogDokumenta s:list){
             RobnaKartica r=robnaKarticaService.getOneByRobaAndMagacinAndPoslovnaGodina
                     (s.getRoba(),p.getMagacin(),p.getPoslovnaGodina());
+            if(r==null){
+                //ne postoji kartica
+                return false;
+            }
+            s.setPrometniDokument(p);
+            //formiram analitiku koju planiram da unesem u bazu i testiram karticu za
+            // sve analitike zajedno kao da je u bazi
+            AnalitikaMagacinskeKartice a=new AnalitikaMagacinskeKartice();
+            a.setRedniBroj(1);
+
+            if(p.getTipPrometnogDokumenta()==TipPrometnogDokumenta.OTPREMNICA){
+                a.setSmer(Smer.IZLAZ);
+                a.setTipPrometa(TipPrometa.OTPREMLJENO);
+            }
+            if(p.getTipPrometnogDokumenta()==TipPrometnogDokumenta.PRIJEMNICA){
+                a.setSmer(Smer.ULAZ);
+                a.setTipPrometa(TipPrometa.DOBAVLJENO);
+            }
+            if(p.getTipPrometnogDokumenta()==TipPrometnogDokumenta.MM){
+                a.setSmer(Smer.ULAZ);
+                a.setTipPrometa(TipPrometa.OTPREMLJENO);
+            }
+            a.setStavkaDokumenta(s);
+            a.setDatumFormiranja(p.getDatumFormiranja());
+            a.setVrednost(s.getVrednost());
+            a.setCena(s.getCena());
+            a.setKolicina(s.getKolicina());
+            a.setRobnaKartica(r);
+            r.getAnalitike().add(a);
+
             if(r!=null){
                 check=r.izracunajStanjeKartice();
                 System.out.println("Ukupna kolicina robe po kartici : "+r.getUkupnaKolicina());
             }
-            if(r==null||r.getUkupnaKolicina()<s.getKolicina()){
+        }
+        return check;
+    }
+    @Override
+    public boolean proveriRobneKarticeZaStorno(PrometniDokument p, List<StavkaPrometnogDokumenta> list){
+        boolean check=false;
+        for (StavkaPrometnogDokumenta s:list){
+            RobnaKartica r=null;
+
+            if(p.getTipPrometnogDokumenta()==TipPrometnogDokumenta.PRIJEMNICA||
+                    p.getTipPrometnogDokumenta()==TipPrometnogDokumenta.OTPREMNICA){
+                r=robnaKarticaService.getOneByRobaAndMagacinAndPoslovnaGodina(s.getRoba()
+                        ,p.getMagacin(),p.getPoslovnaGodina());
+            }
+            if(p.getTipPrometnogDokumenta()==TipPrometnogDokumenta.MM){
+                r=robnaKarticaService.getOneByRobaAndMagacinAndPoslovnaGodina(s.getRoba()
+                        ,p.getMagacin2(),p.getPoslovnaGodina());
+            }
+
+            if(r==null){
+                //ne postoji kartica
                 return false;
+            }else{
+                //filtriram analitiku koju zelim da storniram i takvu karticu proveravam
+                r.setAnalitike(r.getAnalitike().stream().filter(analitikaMagacinskeKartice ->
+                        analitikaMagacinskeKartice.getStavkaDokumenta().getId()!=s.getId())
+                        .collect(Collectors.toList()));
+                check=r.izracunajStanjeKartice();
+                System.out.println("Ukupna kolicina robe po kartici : "+r.getUkupnaKolicina());
             }
         }
         return check;

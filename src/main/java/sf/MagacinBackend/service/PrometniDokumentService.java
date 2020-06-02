@@ -9,10 +9,10 @@ public interface PrometniDokumentService {
     List<PrometniDokument> getAll();
     PrometniDokument insert(PrometniDokument prometniDokument);
     void insertPrijemnicaTransaction(PrometniDokument p, List<StavkaPrometnogDokumenta> list);
-    void knjizenjePrijemnice(PrometniDokument prometniDokument);
-    boolean proveriRobneKarticeIKolicinuSvake(PrometniDokument p, List<StavkaPrometnogDokumenta> list);
+    void knjizenjeIliStorno(PrometniDokument prometniDokument);
+    boolean proveriRobneKarticeZaInsert(PrometniDokument p, List<StavkaPrometnogDokumenta> list);
     void insertOtpremnicaTransaction(PrometniDokument p, List<StavkaPrometnogDokumenta> list);
-    void knjizenjeOtpremnice(PrometniDokument prometniDokument);
     void insertMMTransaction(PrometniDokument p, List<StavkaPrometnogDokumenta> list);
+    boolean proveriRobneKarticeZaStorno(PrometniDokument p, List<StavkaPrometnogDokumenta> list);
 
 }

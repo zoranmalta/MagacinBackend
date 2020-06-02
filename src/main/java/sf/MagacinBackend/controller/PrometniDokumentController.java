@@ -67,6 +67,7 @@ public class PrometniDokumentController {
     @RequestMapping(value = "/proknjizi",method=RequestMethod.POST)
     public ResponseEntity<PrometniDokumentDTO> proknjiziPrijemnicu
             (@RequestBody PrometniDokumentDTO prometniDokumentDTO){
+        System.out.println("Stiglo sa klijenta za knjizenje : " + prometniDokumentDTO.toString());
         try {
             PrometniDokument p = prometniDokumentMapper.toPrometniDokument(prometniDokumentDTO);
             p.setStatusDokumenta(StatusDokumenta.Proknjizen);
@@ -74,15 +75,9 @@ public class PrometniDokumentController {
                     .getAllByPrometniDokument(p);
             p.setListaStavki(stavke);
             p.setDatumKnjizenja(new Timestamp(System.currentTimeMillis()));
-            if(p.getTipPrometnogDokumenta()==TipPrometnogDokumenta.PRIJEMNICA){
-                prometniDokumentService.knjizenjePrijemnice(p);
-            }
-            if(p.getTipPrometnogDokumenta()==TipPrometnogDokumenta.OTPREMNICA){
-                prometniDokumentService.knjizenjeOtpremnice(p);
-            }
-            if(p.getTipPrometnogDokumenta()==TipPrometnogDokumenta.MM){
-                prometniDokumentService.knjizenjeOtpremnice(p);
-            }
+
+            prometniDokumentService.knjizenjeIliStorno(p);
+
             PrometniDokumentDTO pDto=prometniDokumentMapper.toPrometniDokumentDTO(p);
             pDto.setStavke(stavkaPrometnogDokMapper.toListStavkaDTO(stavke));
             return new ResponseEntity<>(pDto, HttpStatus.OK);
@@ -103,7 +98,7 @@ public class PrometniDokumentController {
                     stavkaPrometnogDokumentaDTO -> stavkaPrometnogDokMapper.toStavkaPrometnogDokumenta
                             (stavkaPrometnogDokumentaDTO)).collect(Collectors.toList());
             //provera dovoljnih kolicina stavki i da li uopste postoje
-            boolean check= prometniDokumentService.proveriRobneKarticeIKolicinuSvake(p,list);
+            boolean check= prometniDokumentService.proveriRobneKarticeZaInsert(p,list);
             if(!check){
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
@@ -131,7 +126,7 @@ public class PrometniDokumentController {
                     stavkaPrometnogDokumentaDTO -> stavkaPrometnogDokMapper.toStavkaPrometnogDokumenta
                             (stavkaPrometnogDokumentaDTO)).collect(Collectors.toList());
             //provera dovoljnih kolicina stavki i da li uopste postoje
-            boolean check= prometniDokumentService.proveriRobneKarticeIKolicinuSvake(p,list);
+            boolean check= prometniDokumentService.proveriRobneKarticeZaInsert(p,list);
             if(!check){
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
@@ -169,12 +164,29 @@ public class PrometniDokumentController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
-    @RequestMapping(value = "/stornoprijemnica",method = RequestMethod.POST)
+    @RequestMapping(value = "/stornodokument",method = RequestMethod.POST)
     public ResponseEntity<PrometniDokumentDTO> stornoPrijemnica(@RequestBody PrometniDokumentDTO prometniDokumentDTO) {
-        System.out.println("Stiglo sa klijenta : " + prometniDokumentDTO.toString());
+        System.out.println("Stiglo sa klijenta za storno : " + prometniDokumentDTO.toString());
+        try {
+            PrometniDokument p = prometniDokumentMapper.toPrometniDokument(prometniDokumentDTO);
+            List<StavkaPrometnogDokumenta> list = stavkaPrometnogDokService
+                    .getAllByPrometniDokument(p);
+            p.setStatusDokumenta(StatusDokumenta.Storniran);
+            p.setListaStavki(list);
+            //provera dovoljnih kolicina stavki i da li uopste postoje
+            boolean check= prometniDokumentService.proveriRobneKarticeZaStorno(p,list);
+            if(!check){
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
 
+            prometniDokumentService.knjizenjeIliStorno(p);
 
-
-        return null;
+            PrometniDokumentDTO pDto=prometniDokumentMapper.toPrometniDokumentDTO(p);
+            pDto.setStavke(stavkaPrometnogDokMapper.toListStavkaDTO(list));
+            return new ResponseEntity<>(pDto, HttpStatus.OK);
+        }catch (Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 }
