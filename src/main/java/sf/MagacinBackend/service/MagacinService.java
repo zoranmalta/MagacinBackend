@@ -7,4 +7,5 @@ import java.util.List;
 public interface MagacinService {
 
     List<Magacin> getAll();
+    Magacin getOne(Long id);
 }

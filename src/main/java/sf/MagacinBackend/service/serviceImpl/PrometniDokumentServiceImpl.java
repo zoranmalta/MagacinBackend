@@ -70,6 +70,9 @@ public class PrometniDokumentServiceImpl implements PrometniDokumentService {
             a.setVrednost(s.getVrednost());
             a.setCena(s.getCena());
             a.setKolicina(s.getKolicina());
+            //setovanje stanja u bazi
+            r.getAnalitike().add(a);
+            r.izracunajStanjeKartice();
             a.setRobnaKartica(r);
             a=analitikaMagKarticeService.insertKartica(a);
         }
@@ -158,6 +161,9 @@ public class PrometniDokumentServiceImpl implements PrometniDokumentService {
             a.setVrednost(s.getVrednost());
             a.setCena(s.getCena());
             a.setKolicina(s.getKolicina());
+            //setovanje stanja kartice u bazi
+            r.getAnalitike().add(a);
+            r.izracunajStanjeKartice();
             a.setRobnaKartica(r);
             a=analitikaMagKarticeService.insertKartica(a);
         }

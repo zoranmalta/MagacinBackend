@@ -13,4 +13,6 @@ public interface RobnaKarticaService  {
     List<RobnaKartica> getAllByMagacin(Magacin magacin);
     void insertAll(Magacin magacin,List<Roba> robaList,PoslovnaGodina poslovnaGodina);
     RobnaKartica getOneByRobaAndMagacinAndPoslovnaGodina(Roba roba, Magacin magacin, PoslovnaGodina poslovnaGodina);
+    List<RobnaKartica> getAllByMagacinAndPoslovnaGodina(Magacin magacin,PoslovnaGodina poslovnaGodina);
+
 }

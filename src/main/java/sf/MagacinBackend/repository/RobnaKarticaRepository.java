@@ -12,4 +12,6 @@ public interface RobnaKarticaRepository extends JpaRepository<RobnaKartica,Long>
     RobnaKartica findOneByRoba(Roba roba);
     List<RobnaKartica> findAllByMagacin(Magacin magacin);
     RobnaKartica findOneByRobaAndMagacinAndPoslovnaGodina(Roba roba, Magacin magacin, PoslovnaGodina poslovnaGodina);
+    List<RobnaKartica> findAllByMagacinAndPoslovnaGodina(Magacin magacin,PoslovnaGodina poslovnaGodina);
+
 }

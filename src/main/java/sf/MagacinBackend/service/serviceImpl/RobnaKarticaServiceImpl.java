@@ -30,6 +30,7 @@ public class RobnaKarticaServiceImpl implements RobnaKarticaService {
     public List<RobnaKartica> getAllByMagacin(Magacin magacin) {
         return robnaKarticaRepository.findAllByMagacin(magacin);
     }
+
     @Override
     public void insertAll(Magacin magacin,List<Roba> robaList,PoslovnaGodina poslovnaGodina){
         for (Roba r : robaList) {
@@ -53,5 +54,10 @@ public class RobnaKarticaServiceImpl implements RobnaKarticaService {
     @Override
     public RobnaKartica getOneByRobaAndMagacinAndPoslovnaGodina(Roba roba, Magacin magacin, PoslovnaGodina poslovnaGodina) {
         return robnaKarticaRepository.findOneByRobaAndMagacinAndPoslovnaGodina(roba,magacin,poslovnaGodina);
+    }
+
+    @Override
+    public List<RobnaKartica> getAllByMagacinAndPoslovnaGodina(Magacin magacin, PoslovnaGodina poslovnaGodina) {
+        return robnaKarticaRepository.findAllByMagacinAndPoslovnaGodina(magacin,poslovnaGodina);
     }
 }

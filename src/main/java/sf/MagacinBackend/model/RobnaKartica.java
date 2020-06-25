@@ -60,7 +60,7 @@ public class RobnaKartica implements Serializable  {
 
     @JsonIgnore
     @OneToMany(mappedBy = "robnaKartica")
-    private List<AnalitikaMagacinskeKartice> analitike;
+    private List<AnalitikaMagacinskeKartice> analitike=new ArrayList<>();
 
     public boolean izracunajStanjeKartice(){
         this.setUkupnaKolicina(0.00);
@@ -72,6 +72,7 @@ public class RobnaKartica implements Serializable  {
         this.setVrednostIzlaza(0.00);
 
         List<AnalitikaMagacinskeKartice> list=new ArrayList<>(this.getAnalitike());
+        //sortiram listu po datumnu
         list.sort((o1, o2) -> o1.getDatumFormiranja().compareTo(o2.getDatumFormiranja()));
         for(AnalitikaMagacinskeKartice a:list){
             //stavka ciji je dokument storniran ne ulazi u obracun
@@ -106,6 +107,7 @@ public class RobnaKartica implements Serializable  {
                 return false;
             }
             this.setUkupnaVrednost(this.getVrednostPocetnogStanja()+this.getVrednostUlaza()-this.getVrednostIzlaza());
+            this.setCena(a.getCena());
         }
         return true;
     }

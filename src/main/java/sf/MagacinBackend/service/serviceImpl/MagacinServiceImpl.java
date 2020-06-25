@@ -17,4 +17,9 @@ public class MagacinServiceImpl implements MagacinService {
     public List<Magacin> getAll() {
         return magacinRepository.findAll();
     }
+
+    @Override
+    public Magacin getOne(Long id) {
+        return magacinRepository.getOne(id);
+    }
 }
