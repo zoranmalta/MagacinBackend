@@ -1,0 +1,365 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.12.2.final using JasperReports Library version 6.12.2-75c5e90a222ab406e416cbf590a5397028a52de3  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RobnaKartica" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="426dd48f-0cc5-4a12-b8b8-a47a40cca5ce">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="New Data Adapter "/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="297"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="703"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w1" value="799"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w2" value="201"/>
+	<parameter name="robnaKarticaId" class="java.lang.Long"/>
+	<queryString>
+		<![CDATA[SELECT magacin.robna_kartica.kolicina_ulaza,
+	magacin.robna_kartica.kolicina_izlaza,
+	magacin.robna_kartica.ukupna_kolicina,
+	magacin.analitika_magacinske_kartice.stavka_dokumenta_id,
+	magacin.robna_kartica.kolicina_pocetnog_stanja,
+	magacin.analitika_magacinske_kartice.kolicina,
+	magacin.analitika_magacinske_kartice.tip_prometa,
+	magacin.analitika_magacinske_kartice.smer,
+	magacin.prometni_dokument.tip_prometnog_dokumenta,
+	magacin.analitika_magacinske_kartice.datum_formiranja,
+	magacin.robna_kartica.magacin_id,
+	magacin.analitika_magacinske_kartice.cena,
+	magacin.analitika_magacinske_kartice.vrednost,
+	magacin.robna_kartica.ukupna_vrednost,
+	magacin.robna_kartica.vrednost_pocetnog_stanja,
+	magacin.prometni_dokument.redni_broj,
+	magacin.roba.naziv,
+	magacin.magacin.naziv,
+	magacin.poslovna_godina.godina_start,
+	magacin.prometni_dokument.status_dokumenta
+FROM magacin.analitika_magacinske_kartice
+	INNER JOIN magacin.robna_kartica ON 
+	 magacin.analitika_magacinske_kartice.robna_kartica_id = magacin.robna_kartica.id 
+	Left Outer JOIN magacin.stavka_prometnog_dokumenta ON 
+	 magacin.analitika_magacinske_kartice.stavka_dokumenta_id = magacin.stavka_prometnog_dokumenta.id 
+	left outer JOIN magacin.prometni_dokument ON 
+	 magacin.stavka_prometnog_dokumenta.prometni_dokument_id = magacin.prometni_dokument.id 
+	Left outer JOIN magacin.roba ON 
+	 magacin.robna_kartica.roba_id = magacin.roba.id 
+	left outer JOIN magacin.magacin ON 
+	 magacin.robna_kartica.magacin_id = magacin.magacin.id 
+	left outer JOIN magacin.poslovna_godina ON 
+	 magacin.robna_kartica.poslovna_godina_id = magacin.poslovna_godina.id 
+WHERE 
+	 magacin.robna_kartica.id = $P{robnaKarticaId} 
+	 AND ( magacin.prometni_dokument.status_dokumenta != 2  or   magacin.analitika_magacinske_kartice.stavka_dokumenta_id is null )
+ORDER BY magacin.analitika_magacinske_kartice.datum_formiranja ASC]]>
+	</queryString>
+	<field name="kolicina_ulaza" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.label" value="kolicina_ulaza"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="robna_kartica"/>
+	</field>
+	<field name="kolicina_izlaza" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.label" value="kolicina_izlaza"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="robna_kartica"/>
+	</field>
+	<field name="ukupna_kolicina" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.label" value="ukupna_kolicina"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="robna_kartica"/>
+	</field>
+	<field name="stavka_dokumenta_id" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.label" value="stavka_dokumenta_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="analitika_magacinske_kartice"/>
+	</field>
+	<field name="kolicina_pocetnog_stanja" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.label" value="kolicina_pocetnog_stanja"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="robna_kartica"/>
+	</field>
+	<field name="kolicina" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.label" value="kolicina"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="analitika_magacinske_kartice"/>
+	</field>
+	<field name="tip_prometa" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="tip_prometa"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="analitika_magacinske_kartice"/>
+	</field>
+	<field name="smer" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="smer"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="analitika_magacinske_kartice"/>
+	</field>
+	<field name="tip_prometnog_dokumenta" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="tip_prometnog_dokumenta"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="prometni_dokument"/>
+	</field>
+	<field name="datum_formiranja" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.label" value="datum_formiranja"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="analitika_magacinske_kartice"/>
+	</field>
+	<field name="magacin_id" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.label" value="magacin_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="robna_kartica"/>
+	</field>
+	<field name="cena" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.label" value="cena"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="analitika_magacinske_kartice"/>
+	</field>
+	<field name="vrednost" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.label" value="vrednost"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="analitika_magacinske_kartice"/>
+	</field>
+	<field name="ukupna_vrednost" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.label" value="ukupna_vrednost"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="robna_kartica"/>
+	</field>
+	<field name="vrednost_pocetnog_stanja" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.label" value="vrednost_pocetnog_stanja"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="robna_kartica"/>
+	</field>
+	<field name="redni_broj" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="redni_broj"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="prometni_dokument"/>
+	</field>
+	<field name="naziv" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="naziv"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="roba"/>
+	</field>
+	<field name="COLUMN_18" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="naziv"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="magacin"/>
+	</field>
+	<field name="godina_start" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.label" value="godina_start"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="poslovna_godina"/>
+	</field>
+	<field name="status_dokumenta" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="status_dokumenta"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="prometni_dokument"/>
+	</field>
+	<variable name="Kolicina_Ulaza" class="java.lang.String" incrementType="Report">
+		<variableExpression><![CDATA[$F{stavka_dokumenta_id} == null  ? $F{kolicina}.toString() :  $F{tip_prometnog_dokumenta}.equals( 0 ) ?  $F{kolicina}.toString() : $F{tip_prometnog_dokumenta}.equals( 2 ) && $F{tip_prometa}.equals( 1 ) ?  "-"+$F{kolicina}.toString() : $F{tip_prometnog_dokumenta}.equals( 2 ) && $F{tip_prometa}.equals( 0 ) ? $F{kolicina}.toString() : ""]]></variableExpression>
+		<initialValueExpression><![CDATA[$F{kolicina_pocetnog_stanja}.toString()]]></initialValueExpression>
+	</variable>
+	<variable name="Kolicina_Izlaza" class="java.lang.String">
+		<variableExpression><![CDATA[$F{tip_prometnog_dokumenta} == null ?"":  $F{tip_prometnog_dokumenta}.equals( 1 ) ?  $F{kolicina}.toString() :  ""]]></variableExpression>
+	</variable>
+	<variable name="Saldo" class="java.lang.Double">
+		<variableExpression><![CDATA[$F{tip_prometnog_dokumenta} == null ? $F{kolicina} :  $F{tip_prometnog_dokumenta}.equals( 0 ) ? $V{Saldo}.sum($V{Saldo},$F{kolicina}) : $F{tip_prometnog_dokumenta}.equals( 1 ) ? $V{Saldo}.sum($V{Saldo},$F{kolicina}*(-1)) :  $F{tip_prometnog_dokumenta}.equals( 2 ) &&  $F{tip_prometa}.equals(0) ? $V{Saldo}.sum($V{Saldo},$F{kolicina}) : $F{tip_prometnog_dokumenta}.equals( 2 ) &&  $F{tip_prometa}.equals(1) ? $V{Saldo}.sum($V{Saldo},$F{kolicina}*(-1)):0]]></variableExpression>
+		<initialValueExpression><![CDATA[0.0]]></initialValueExpression>
+	</variable>
+	<variable name="Ulazna_vrednost" class="java.lang.String">
+		<variableExpression><![CDATA[$F{stavka_dokumenta_id} == null  ? $F{vrednost}.toString() :  $F{tip_prometnog_dokumenta}.equals( 0 ) ?  $F{vrednost}.toString() : $F{tip_prometnog_dokumenta}.equals( 2 ) && $F{tip_prometa}.equals( 1 ) ?  "-"+$F{vrednost}.toString() : $F{tip_prometnog_dokumenta}.equals( 2 ) && $F{tip_prometa}.equals( 0 ) ? $F{vrednost}.toString() : ""]]></variableExpression>
+		<initialValueExpression><![CDATA[$F{vrednost_pocetnog_stanja}.toString()]]></initialValueExpression>
+	</variable>
+	<variable name="Izlazna_vrednost" class="java.lang.String">
+		<variableExpression><![CDATA[$F{tip_prometnog_dokumenta} == null ?"":  $F{tip_prometnog_dokumenta}.equals( 1 ) ?  $F{vrednost}.toString() :  ""]]></variableExpression>
+	</variable>
+	<variable name="Ukupna_vrednost" class="java.lang.Double">
+		<variableExpression><![CDATA[$F{tip_prometnog_dokumenta} == null ? $F{vrednost} :  $F{tip_prometnog_dokumenta}.equals( 0 ) ? $V{Ukupna_vrednost}.sum($V{Ukupna_vrednost},$F{vrednost}) : $F{tip_prometnog_dokumenta}.equals( 1 ) ? $V{Ukupna_vrednost}.sum($V{Ukupna_vrednost},$F{vrednost}*(-1)) :  $F{tip_prometnog_dokumenta}.equals( 2 ) &&  $F{tip_prometa}.equals(0) ? $V{Ukupna_vrednost}.sum($V{Ukupna_vrednost},$F{vrednost}) : $F{tip_prometnog_dokumenta}.equals( 2 ) &&  $F{tip_prometa}.equals(1) ? $V{Ukupna_vrednost}.sum($V{Ukupna_vrednost},$F{vrednost}*(-1)):0]]></variableExpression>
+		<initialValueExpression><![CDATA[0.0]]></initialValueExpression>
+	</variable>
+	<variable name="Datum" class="java.lang.String">
+		<variableExpression><![CDATA[$F{datum_formiranja}.toString()]]></variableExpression>
+	</variable>
+	<variable name="Tip_prometa" class="java.lang.String">
+		<variableExpression><![CDATA[$F{stavka_dokumenta_id}==null ? "":$F{tip_prometa}.equals(0)? "Pr":"Ot"]]></variableExpression>
+	</variable>
+	<variable name="Redni_broj" class="java.lang.String">
+		<variableExpression><![CDATA[$F{stavka_dokumenta_id} ==null ? "":$F{redni_broj}]]></variableExpression>
+	</variable>
+	<variable name="Smer" class="java.lang.String">
+		<variableExpression><![CDATA[$F{stavka_dokumenta_id} == null ? "":$F{smer}.equals(0)? "U":"I"]]></variableExpression>
+	</variable>
+	<variable name="Uk_ul_Kol" class="java.lang.Double">
+		<variableExpression><![CDATA[$F{stavka_dokumenta_id} == null  ?$V{Uk_ul_Kol}.sum(0,$F{kolicina_pocetnog_stanja})  :  $F{tip_prometnog_dokumenta}.equals( 0 ) ?  $V{Uk_ul_Kol}.sum($V{Uk_ul_Kol},$F{kolicina}) : $F{tip_prometnog_dokumenta}.equals( 2 ) && $F{tip_prometa}.equals( 1 ) ? $V{Uk_ul_Kol}.sum($V{Uk_ul_Kol},$F{kolicina}*(-1))   : $F{tip_prometnog_dokumenta}.equals( 2 ) && $F{tip_prometa}.equals( 0 ) ? $V{Uk_ul_Kol}.sum($V{Uk_ul_Kol},$F{kolicina}) : $V{Uk_ul_Kol}]]></variableExpression>
+		<initialValueExpression><![CDATA[0.0]]></initialValueExpression>
+	</variable>
+	<variable name="Uk_iz_kol" class="java.lang.Double">
+		<variableExpression><![CDATA[$F{tip_prometnog_dokumenta} == null ?0.0:  $F{tip_prometnog_dokumenta}.equals( 1 ) ?  $V{Uk_iz_kol}.sum($V{Uk_iz_kol} , $F{kolicina}) :  $V{Uk_iz_kol}]]></variableExpression>
+		<initialValueExpression><![CDATA[0.0]]></initialValueExpression>
+	</variable>
+	<variable name="Ukupna_kolicina" class="java.lang.Double">
+		<variableExpression><![CDATA[$V{Saldo}]]></variableExpression>
+	</variable>
+	<variable name="Uk_ul_vr" class="java.lang.Double">
+		<variableExpression><![CDATA[$F{stavka_dokumenta_id} == null  ? $V{Uk_ul_vr}.sum(0.0,$F{vrednost_pocetnog_stanja}) :  $F{tip_prometnog_dokumenta}.equals( 0 ) ?  $V{Uk_ul_vr}.sum($V{Uk_ul_vr} , $F{vrednost})  : $F{tip_prometnog_dokumenta}.equals( 2 ) && $F{tip_prometa}.equals( 1 ) ? $V{Uk_ul_vr}.sum($V{Uk_ul_vr} , $F{vrednost}*(-1))   : $F{tip_prometnog_dokumenta}.equals( 2 ) && $F{tip_prometa}.equals( 0 ) ? $V{Uk_ul_vr}.sum($V{Uk_ul_vr} , $F{vrednost}) : $V{Uk_ul_vr}]]></variableExpression>
+		<initialValueExpression><![CDATA[0.0]]></initialValueExpression>
+	</variable>
+	<variable name="Uk_iz_vr" class="java.lang.Double">
+		<variableExpression><![CDATA[$F{tip_prometnog_dokumenta} == null ?0.0:  $F{tip_prometnog_dokumenta}.equals( 1 ) ?  $V{Uk_iz_vr}.sum($V{Uk_iz_vr} , $F{vrednost}) :  $V{Uk_iz_vr}]]></variableExpression>
+		<initialValueExpression><![CDATA[0.0]]></initialValueExpression>
+	</variable>
+	<variable name="Uk_vr_kraj" class="java.lang.Double">
+		<variableExpression><![CDATA[$V{Ukupna_vrednost}]]></variableExpression>
+		<initialValueExpression><![CDATA[0.0]]></initialValueExpression>
+	</variable>
+	<variable name="Poslovna_godina" class="java.lang.String">
+		<variableExpression><![CDATA[$F{godina_start}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="80" splitType="Stretch">
+			<staticText>
+				<reportElement x="200" y="14" width="160" height="30" uuid="7e1dd70f-7b89-4f00-bf8c-d84285cf7afc"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Robna kartica sa analitikom]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="38" y="50" width="128" height="24" uuid="0914b84f-b5ad-44c0-9445-81e02698079c"/>
+				<textFieldExpression><![CDATA[$F{naziv}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="-9" y="50" width="46" height="24" uuid="50ff17ce-5cc9-498e-9c36-a5a63956c248"/>
+				<text><![CDATA[Roba:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="-10" y="20" width="46" height="30" uuid="aacda787-0738-42fc-b930-c56816b60528"/>
+				<text><![CDATA[Magacin:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="40" y="20" width="126" height="30" uuid="1006a322-5dc1-4b97-b1b0-2e5af4d98f8c"/>
+				<textFieldExpression><![CDATA[$F{COLUMN_18}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="370" y="60" width="80" height="18" uuid="66adb871-7530-489a-9a73-3f6e0d66068f"/>
+				<text><![CDATA[Poslovna godina:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="450" y="60" width="40" height="16" uuid="f67d5813-0917-466c-9303-6771429cbb93"/>
+				<textFieldExpression><![CDATA[$F{godina_start}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="34" splitType="Stretch">
+			<staticText>
+				<reportElement x="160" y="4" width="50" height="16" uuid="40d9153b-7efc-4427-9874-85295a24bb87"/>
+				<text><![CDATA[Ulaz]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="210" y="4" width="60" height="16" uuid="8567a3ba-01d3-4bb4-9f1b-b4bf60747ae9"/>
+				<text><![CDATA[Izlaz]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="270" y="4" width="60" height="16" uuid="3c9ad29e-7926-46cc-b606-46c0de2b7c89"/>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[Uk. kolicina]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="330" y="4" width="60" height="16" uuid="010a1e9d-1d46-4d5f-b00d-d7eef7225c8e"/>
+				<text><![CDATA[Cena]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="390" y="4" width="50" height="16" uuid="f26c551e-92a7-4c24-b0f1-aeddaa97c50e"/>
+				<text><![CDATA[Ulazna vr.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="440" y="4" width="60" height="16" uuid="52ed0f01-549d-408e-989e-075743543411"/>
+				<text><![CDATA[Izlazna vr.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="500" y="4" width="74" height="16" uuid="46c78d70-d5ba-4afc-8be2-358ccd6c82c1"/>
+				<text><![CDATA[Ukupna vr.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="130" y="4" width="30" height="16" uuid="940d1beb-d34d-4885-b277-2cd75c50eca7"/>
+				<text><![CDATA[smer]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="80" y="4" width="50" height="16" uuid="40941306-aebd-4709-b3ac-a8037d7d7294"/>
+				<text><![CDATA[redni_broj]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="50" y="4" width="30" height="16" uuid="10699c8b-e21a-4daa-b1bb-6cbc685dad9d"/>
+				<text><![CDATA[tip_prometa]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="-20" y="4" width="60" height="16" uuid="8fa89b6d-23c6-475a-898a-bafde5ecf879"/>
+				<text><![CDATA[datum_formiranja]]></text>
+			</staticText>
+			<line>
+				<reportElement x="-20" y="30" width="594" height="1" uuid="35395f6e-bbbb-4b22-908f-386e34175c44"/>
+			</line>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="54" splitType="Stretch">
+			<textField>
+				<reportElement x="160" y="0" width="50" height="20" uuid="dd9f1318-5274-4939-91c0-91981bfafde1"/>
+				<textFieldExpression><![CDATA[$V{Kolicina_Ulaza}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="210" y="0" width="60" height="20" uuid="1ff960d9-df00-4350-a3f6-8bb0ef23406e"/>
+				<textFieldExpression><![CDATA[$V{Kolicina_Izlaza}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="270" y="0" width="60" height="20" uuid="b67cbc19-6adc-4256-801a-94bcb899434c"/>
+				<textFieldExpression><![CDATA[$V{Saldo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="330" y="0" width="60" height="20" uuid="6fe4f56e-a688-4244-a1e1-800a958ac290"/>
+				<textFieldExpression><![CDATA[$F{cena}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="390" y="0" width="50" height="20" uuid="6091d9ae-e61f-42f4-8c48-bd03ab19fa3e"/>
+				<textFieldExpression><![CDATA[$V{Ulazna_vrednost}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="440" y="0" width="60" height="20" uuid="68272f11-6012-46e5-8fce-72b52bd56d1f"/>
+				<textFieldExpression><![CDATA[$V{Izlazna_vrednost}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="500" y="0" width="74" height="20" uuid="c83077a9-e29c-489a-bd23-b3c88cad1490"/>
+				<textFieldExpression><![CDATA[$V{Ukupna_vrednost}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="-20" y="0" width="60" height="20" uuid="40165459-0cfe-4662-a8af-558e2dd46c2a"/>
+				<textFieldExpression><![CDATA[$V{Datum}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="50" y="0" width="30" height="20" uuid="50db8a32-4843-48df-8b85-81d27bfbe792"/>
+				<textFieldExpression><![CDATA[$V{Tip_prometa}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="80" y="0" width="50" height="18" uuid="5cd95cbc-7df1-4052-9269-1f9735fc036c"/>
+				<textFieldExpression><![CDATA[$V{Redni_broj}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="130" y="0" width="30" height="20" uuid="f9e2bdce-b177-44ee-a43b-5a83dd34208e"/>
+				<textFieldExpression><![CDATA[$V{Smer}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<lastPageFooter>
+		<band height="94">
+			<staticText>
+				<reportElement x="-20" y="10" width="58" height="20" uuid="a5874bec-7671-4ddb-88c5-85f9914681fd"/>
+				<text><![CDATA[Ukupno: ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="160" y="10" width="50" height="18" uuid="bb6867e4-334d-4037-a9b5-483f83c9e8b7"/>
+				<textFieldExpression><![CDATA[$V{Uk_ul_Kol}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="210" y="10" width="60" height="18" uuid="81691840-3fcf-40b1-a6d1-bc40d39a10d1"/>
+				<textFieldExpression><![CDATA[$V{Uk_iz_kol}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="270" y="10" width="60" height="18" uuid="36b3f56c-c473-454e-a520-9c4940bacfc2"/>
+				<textFieldExpression><![CDATA[$V{Ukupna_kolicina}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="390" y="10" width="50" height="18" uuid="f7e48ec2-e928-43b5-b0ae-bc1501e22f4c"/>
+				<textFieldExpression><![CDATA[$V{Uk_ul_vr}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="440" y="10" width="60" height="18" uuid="a73578b7-3b7c-4344-8d8b-1e0530c84d23"/>
+				<textFieldExpression><![CDATA[$V{Uk_iz_vr}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="500" y="10" width="74" height="18" uuid="095bf268-b38b-4605-b2ec-a6acf35d8d93"/>
+				<textFieldExpression><![CDATA[$V{Uk_vr_kraj}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="-20" y="10" width="594" height="1" uuid="482d6437-1b98-4b28-9ddb-76d0a433128e"/>
+			</line>
+		</band>
+	</lastPageFooter>
+</jasperReport>
