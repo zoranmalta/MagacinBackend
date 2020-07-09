@@ -240,11 +240,20 @@ public class PrometniDokumentServiceImpl implements PrometniDokumentService {
                 //ne postoji kartica
                 return false;
             }else{
-                //filtriram analitiku koju zelim da storniram i takvu karticu proveravam
-                r.setAnalitike(r.getAnalitike().stream().filter(analitikaMagacinskeKartice ->
-                        analitikaMagacinskeKartice.getStavkaDokumenta().getId()!=s.getId())
-                        .collect(Collectors.toList()));
+                //filtriram analitiku koju zelim da storniram i takvu karticu proveravam bez te analitike
+                //pocetnu analitiku kojoj je stavkaDokumenta null vracam isto
+                r.setAnalitike(r.getAnalitike().stream().filter(analitikaMagacinskeKartice ->{
+                    if(analitikaMagacinskeKartice.getStavkaDokumenta()!=null){
+                        return analitikaMagacinskeKartice.getStavkaDokumenta().getId()!=s.getId();
+                    }else {
+                        return true;
+                    }
+                }
+                       ).collect(Collectors.toList()));
                 check=r.izracunajStanjeKartice();
+                if(r.getUkupnaKolicina()<0){
+                    return false;
+                }
                 System.out.println("Ukupna kolicina robe po kartici : "+r.getUkupnaKolicina());
             }
         }

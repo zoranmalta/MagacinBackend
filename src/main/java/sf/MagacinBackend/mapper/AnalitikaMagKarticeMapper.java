@@ -41,7 +41,11 @@ public class AnalitikaMagKarticeMapper {
         a.setTipPrometa(amk.getTipPrometa());
         a.setDatumFormiranja(amk.getDatumFormiranja());
         a.setRobnaKartica(robnaKarticaMapper.toRobnaKarticaDTO(amk.getRobnaKartica()));
-        a.setStavkaDokumenta(stavkaPrometnogDokMapper.toStavkaPrometnogDokumentaDTO(amk.getStavkaDokumenta()));
+        if(amk.getStavkaDokumenta()==null){
+            a.setStavkaDokumenta(null);
+        }else {
+            a.setStavkaDokumenta(stavkaPrometnogDokMapper.toStavkaPrometnogDokumentaDTO(amk.getStavkaDokumenta()));
+        }
         return a;
 
     }

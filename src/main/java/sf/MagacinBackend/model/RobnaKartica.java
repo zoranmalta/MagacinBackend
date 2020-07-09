@@ -75,6 +75,9 @@ public class RobnaKartica implements Serializable  {
         //sortiram listu po datumnu
         list.sort((o1, o2) -> o1.getDatumFormiranja().compareTo(o2.getDatumFormiranja()));
         for(AnalitikaMagacinskeKartice a:list){
+            if(a.getStavkaDokumenta()==null){
+                continue;
+            }
             //stavka ciji je dokument storniran ne ulazi u obracun
             if(a.getStavkaDokumenta().getPrometniDokument().getStatusDokumenta()==StatusDokumenta.Storniran){
                 continue;

@@ -68,8 +68,8 @@ public class RobnaKarticaController {
         }
     }
 
-    @RequestMapping(value="/izvestaj/{id}",method=RequestMethod.GET)
-    public ResponseEntity<Void> izvestaj(@PathVariable("id") Long id){
+    @RequestMapping(value="/izvestajlager/{id}",method=RequestMethod.GET)
+    public ResponseEntity<Void> izvestajLager(@PathVariable("id") Long id){
         try {
             Connection conn;
             conn =
@@ -88,32 +88,24 @@ public class RobnaKarticaController {
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
-    //vraca listu kartica i analitika za odredjnu robu dokumenta koji hocemo da insertujemo
-    //ako ne postoji kartica duzina liste je manja od liste stavki tog dokumenta za insert
-    //todo objasnjeno dole
-    @RequestMapping(value = "/karticeoddokumenta",method = RequestMethod.POST)
-    public ResponseEntity<List<RobnaKarticaDTO>> getListByPrometniDokument(@RequestBody PrometniDokumentDTO prometniDokumentDTO){
+    @RequestMapping(value="/izvestajanalitika/{id}",method=RequestMethod.GET)
+    public ResponseEntity<Void> izvestajAnalitika(@PathVariable("id") Long id){
         try {
-            List<RobnaKartica> robnaKarticaList=new ArrayList<>();
-            List<StavkaPrometnogDokumenta> list=prometniDokumentDTO.getStavke().stream().map
-                    (stavkaPrometnogDokumentaDTO -> stavkaPrometnogDokMapper.toStavkaPrometnogDokumenta
-                            (stavkaPrometnogDokumentaDTO)).collect(Collectors.toList());
-            Magacin m=magacinMapper.toMagacin(prometniDokumentDTO.getMagacin());
-            PoslovnaGodina godina=poslovnaGodinaService.findOneByDate(prometniDokumentDTO.getDatumFormiranja());
-            for (StavkaPrometnogDokumenta s:list){
-                RobnaKartica robnaKartica=robnaKarticaService
-                        .getOneByRobaAndMagacinAndPoslovnaGodina(s.getRoba(),m,godina);
-                if(robnaKartica==null){
-                    continue;
-                }
-                //todo izvuci listu analitika za svaku karticu i setovani ih u karticu
-                robnaKarticaList.add(robnaKartica);
-            }
-            return new ResponseEntity<>(robnaKarticaMapper.toListRobnaKarticaDTO(robnaKarticaList)
-            ,HttpStatus.OK);
-        }catch (Exception e){
-            e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            Connection conn;
+            conn =
+                    (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/magacin?useSSL=false&" +
+                            "user=root&password=Lukaivuk");
+            HashMap map = new HashMap();
+            map.put("robnaKarticaId",id);
+            JasperReport jasReport = (JasperReport) JRLoader.loadObjectFromFile("A:/PoslovnaInformatikaBackend/MagacinBackend/src/main/resources/RobnaKartica.jasper");
+            JasperPrint jasPrint = JasperFillManager.fillReport(jasReport, map, conn);
+            File pdf = new File("A:/PoslovnaInformatikaBackend/MagacinBackend/src/main/resources/robnaKartica.pdf");
+            JasperExportManager.exportReportToPdfStream(jasPrint, new FileOutputStream(pdf));
+            System.out.println("Temp file : " + pdf.getAbsolutePath());
+        }catch (Exception ex) {
+            ex.printStackTrace();
         }
+        return new ResponseEntity<Void>(HttpStatus.OK);
     }
+
 }
